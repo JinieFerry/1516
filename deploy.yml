@@ -1,0 +1,27 @@
+---
+- name:1516
+  hosts: webservers
+  become: true
+  vars:
+    git_repo_url: "https://github.com/JinieFerry/1516.git"
+    web_root: "/var/www/html"
+
+  tasks:
+    - name: Nginx 웹서버설치with KJJ-art
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: GitHub 저장소에서 최신 소스 코드 배포 with KJJ-art
+      git:
+        repo: "{{ git_repo_url }}"
+        dest: "{{ web_root }}"
+        version: main
+        force: yes
+
+    - name: Nginx 서비스 활성화 및 시작 with KJJ-art
+      service:
+        name: nginx
+        state: started
+        enabled: true
